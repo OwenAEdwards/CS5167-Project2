@@ -1,4 +1,6 @@
 <script>
+    import { addOrder } from "$lib/stores"; // Import addOrder from stores.js
+
     export let isOpen = false;
     export let onClose;
     export let title = '';
@@ -8,6 +10,7 @@
     let roast = 'Light Roast'; // Default option
     let strength = 'Regular'; // Default option
     let size = '10 oz'; // Default option
+    let coffeeType = ''; // Variable to hold coffee type
 
     let isFavorited = false; // Tracks whether the heart is filled or not
 
@@ -27,11 +30,13 @@
     // Function to handle "Order" button click
     function handleOrder() {
         const orderDetails = {
+            title,
             roast,
             strength,
             size
         };
         console.log('Order details:', orderDetails);
+        addOrder(orderDetails); // Add the order to the store
         onClose(); // Close modal after ordering
     }
 
@@ -70,7 +75,6 @@
                 />
             </div>
             
-
             <h2 class="text-xl font-bold mb-4">{title}</h2>
             <p class="mb-6">{description}</p>
 

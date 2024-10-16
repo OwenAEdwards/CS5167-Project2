@@ -24,7 +24,11 @@
 
   // Subscribe to the orderStore to get the latest order
   const unsubscribeOrder = orderStore.subscribe(orders => {
-    lastOrder.set(orders[orders.length - 1] || null); // Set the latest order
+    const latestOrder = orders[orders.length - 1] || null; // Get the latest order
+    lastOrder.set(latestOrder); // Set the latest order
+    if (latestOrder) {
+      changeCurrentBrew(latestOrder.title); // Update current brew based on the order
+    }
   });
 
   // Cleanup the subscription on component destroy
