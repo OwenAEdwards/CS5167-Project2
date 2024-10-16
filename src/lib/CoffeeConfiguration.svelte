@@ -5,7 +5,7 @@
     export let description = '';
 
     // Variables for configuration
-    let roast = 'Regular'; // Default option
+    let roast = 'Light Roast'; // Default option
     let strength = 'Regular'; // Default option
     let size = '10 oz'; // Default option
 
