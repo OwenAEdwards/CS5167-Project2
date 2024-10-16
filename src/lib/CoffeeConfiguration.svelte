@@ -39,13 +39,29 @@
     function toggleFavorite() {
         isFavorited = !isFavorited;
     }
+
+    // Function to handle keydown event for Escape key
+    function handleKeydown(event) {
+        if (event.key === 'Escape') {
+            onClose(); // Close modal
+        }
+    }
+
+    // Add event listener for keydown when modal is open
+    $: if (isOpen) {
+        window.addEventListener('keydown', handleKeydown);
+    }
+
+    // Cleanup the event listener when modal is closed or component is destroyed
+    $: if (!isOpen) {
+        window.removeEventListener('keydown', handleKeydown);
+    }
 </script>
 
 {#if isOpen}
     <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded-lg w-full max-w-lg relative">
             <!-- Heart Icon with Toggle -->
-
             <div class="absolute top-2 right-2 cursor-pointer" on:click={toggleFavorite}>
                 {#if isFavorited}
                     <!-- Filled Heart Icon -->
