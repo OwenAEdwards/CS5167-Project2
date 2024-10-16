@@ -76,3 +76,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.eighty-container {
+  flex: 0 0 80%;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  padding: 1rem;
+}
+
+.twenty-container {
+  flex: 0 0 20%;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  padding: 1rem;
+}
