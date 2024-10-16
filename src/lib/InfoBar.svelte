@@ -1,10 +1,11 @@
 <script lang="js">
   import * as Card from "$lib/components/ui/card";
   import { Progress } from "$lib/components/ui/progress";
-  //import { temp, pressure, waterAmt, beans, currentBrew, timer, caffAmt } from "$lib/stores";
-  import { dummyData, favorite, lastBrew } from "$lib/stores";
+  import { dummyData, orderStore } from "$lib/stores";
+  import { onMount } from "svelte";
+  import { writable } from "svelte/store";
 
-  // Mock data for coffee machine state
+  // Store variables for the coffee machine state
   let temperature = 90; // in Celsius
   let pressure = 15; // in bar
   let waterAmount = 70; // percentage
@@ -18,19 +19,102 @@
   // Caffeine in milligrams
   let caffeineMilligrams = 85; // milligrams
 
-  // Function to start the countdown
-  // function startCountdown() {
-  //     const interval = setInterval(() => {
-  //         timer -= 1;
-  //         if (timer <= 0) {
-  //             clearInterval(interval);
-  //             timer = 0; // Stop at 0
-  //         }
-  //     }, 1000);
-  // }
+  // Store to hold the last order details
+  let lastOrder = writable(null);
 
-  // Start the countdown when the component mounts
-  // startCountdown();
+  // Subscribe to the orderStore to get the latest order
+  const unsubscribeOrder = orderStore.subscribe(orders => {
+    lastOrder.set(orders[orders.length - 1] || null); // Set the latest order
+  });
+
+  // Cleanup the subscription on component destroy
+  onMount(() => {
+    return () => {
+      unsubscribeOrder();
+    };
+  });
+
+  // Function to simulate temperature increase
+  function increaseTemperature() {
+    const interval = setInterval(() => {
+      if (temperature < 100) {
+        temperature += 5; // Increase temperature by 5°C
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  // Function to simulate pressure behavior
+  function simulatePressure() {
+    const interval = setInterval(() => {
+      if (pressure < 20) {
+        pressure += 1; // Increase pressure by 1 bar
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  // Function to simulate water amount behavior
+  function simulateWaterAmount() {
+    const interval = setInterval(() => {
+      if (waterAmount > 0) {
+        waterAmount -= 5; // Decrease water amount by 5%
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  // Function to simulate beans remaining behavior
+  function simulateBeansRemaining() {
+    const interval = setInterval(() => {
+      if (beansRemaining > 0) {
+        beansRemaining -= 1; // Decrease beans remaining by 1%
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  // Function to change the current coffee brewing
+  function changeCurrentBrew(coffeeType) {
+    currentCoffee = coffeeType;
+
+    // Get the coffee data from the store
+    dummyData.subscribe((data) => {
+      const brewInfo = data.find(item => item.currentBrew === coffeeType);
+      if (brewInfo) {
+        temperature = +brewInfo.temp; // Convert to number
+        pressure = +brewInfo.pressure; // Convert to number
+        waterAmount = +brewInfo.waterAmt; // Convert to number
+        beansRemaining = +brewInfo.beans; // Convert to number
+        timer = +brewInfo.timer; // Convert to number
+        caffeineMilligrams = +brewInfo.caffAmt; // Convert to number
+      }
+    })();
+  }
+
+  // Function to start the countdown timer
+  function startCountdown() {
+    const interval = setInterval(() => {
+      timer -= 1;
+      if (timer <= 0) {
+        clearInterval(interval);
+        timer = 0; // Stop at 0
+      }
+    }, 1000);
+  }
+
+  // Start brewing process and timer on mount
+  onMount(() => {
+    increaseTemperature();
+    simulatePressure();
+    simulateWaterAmount();
+    simulateBeansRemaining();
+    startCountdown();
+  });
 </script>
 
 <div class="p-4">
@@ -116,6 +200,24 @@
               <p>{caffeineMilligrams} mg</p>
           </Card.Content>
       </Card.Root>
+  </div>
+
+  <!-- Last Order Details -->
+  <div class="mt-4">
+      {#if $lastOrder}
+          <Card.Root>
+              <Card.Header>
+                  <Card.Title>Last Order Details</Card.Title>
+              </Card.Header>
+              <Card.Content>
+                  <p>Roast: {$lastOrder.roast}</p>
+                  <p>Strength: {$lastOrder.strength}</p>
+                  <p>Size: {$lastOrder.size}</p>
+              </Card.Content>
+          </Card.Root>
+      {:else}
+          <p>No orders placed yet.</p>
+      {/if}
   </div>
 </div>
 
