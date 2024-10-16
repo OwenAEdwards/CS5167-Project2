@@ -9,6 +9,8 @@
     let strength = 'Regular'; // Default option
     let size = '10 oz'; // Default option
 
+    let isFavorited = false; // Tracks whether the heart is filled or not
+
     // Function to set the selected option
     function setRoastType(type) {
         roast = type;
@@ -32,11 +34,32 @@
         console.log('Order details:', orderDetails);
         onClose(); // Close modal after ordering
     }
+
+    // Toggle the heart icon between filled and outlined
+    function toggleFavorite() {
+        isFavorited = !isFavorited;
+    }
 </script>
 
 {#if isOpen}
     <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
-        <div class="bg-white p-6 rounded-lg w-full max-w-lg">
+        <div class="bg-white p-6 rounded-lg w-full max-w-lg relative">
+            <!-- Heart Icon with Toggle -->
+
+            <div class="absolute top-2 right-2 cursor-pointer" on:click={toggleFavorite}>
+                {#if isFavorited}
+                    <!-- Filled Heart Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                {:else}
+                    <!-- Outlined Heart Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.172 5.172a4 4 0 000 5.656l8.485 8.485a1 1 0 001.414 0l8.485-8.485a4 4 0 00-5.656-5.656L12 9.586 8.828 6.414a4 4 0 00-5.656 0z"/>
+                    </svg>
+                {/if}
+            </div>
+
             <h2 class="text-xl font-bold mb-4">{title}</h2>
             <p class="mb-6">{description}</p>
 
