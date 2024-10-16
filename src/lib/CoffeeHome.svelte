@@ -1,5 +1,6 @@
 <script lang="js">
     import * as Card from "$lib/components/ui/card";
+    import BrewShortcuts from "./BrewShortcuts.svelte";
     import CoffeeConfiguration from "./CoffeeConfiguration.svelte";
 
     let isModalOpen = false;
@@ -120,7 +121,7 @@
             </div>
         </div>
     </div>
-
+    <BrewShortcuts/>
     <!-- Coffee Configuration (Modal) -->
     <CoffeeConfiguration isOpen={isModalOpen} onClose={closeModal} title={modalTitle} description={modalDescription} />
 </main>
