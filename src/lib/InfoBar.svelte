@@ -8,8 +8,27 @@
   let waterAmount = 70; // percentage
   let beansRemaining = 50; // percentage
   let currentCoffee = "Espresso";
-  let timer = "00:45"; // Timer for brewing
-  let caffeinePercentage = 85; // percentage
+
+  // Timer setup
+  let countdownTime = 45; // Countdown in seconds
+  let timer = countdownTime;
+
+  // Caffeine in milligrams
+  let caffeineMilligrams = 85; // milligrams
+
+  // Function to start the countdown
+  // function startCountdown() {
+  //     const interval = setInterval(() => {
+  //         timer -= 1;
+  //         if (timer <= 0) {
+  //             clearInterval(interval);
+  //             timer = 0; // Stop at 0
+  //         }
+  //     }, 1000);
+  // }
+
+  // Start the countdown when the component mounts
+  // startCountdown();
 </script>
 
 <div class="p-4">
@@ -73,7 +92,7 @@
       </Card.Root>
   </div>
 
-  <!-- Timer and Caffeine Percentage -->
+  <!-- Timer and Caffeine Milligrams -->
   <div class="grid grid-cols-2 gap-4 mt-4">
       <!-- Timer -->
       <Card.Root>
@@ -81,18 +100,18 @@
               <Card.Title>Timer</Card.Title>
           </Card.Header>
           <Card.Content>
-              <p>{timer}</p>
+              <p>{timer} seconds</p>
           </Card.Content>
       </Card.Root>
 
-      <!-- Caffeine Percentage -->
+      <!-- Caffeine in Milligrams -->
       <Card.Root>
           <Card.Header>
-              <Card.Title>Caffeine %</Card.Title>
+              <Card.Title>Caffeine (mg)</Card.Title>
           </Card.Header>
           <Card.Content>
-              <Progress value={caffeinePercentage} />
-              <p>{caffeinePercentage}%</p>
+              <Progress value={caffeineMilligrams} />
+              <p>{caffeineMilligrams} mg</p>
           </Card.Content>
       </Card.Root>
   </div>
