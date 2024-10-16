@@ -25,7 +25,10 @@
         <!-- Grid layout for coffee options -->
         <div class="grid-container">
             <!-- Drip -->
-            <div class="cursor-pointer" on:click={() => openModal('Drip', 'Classic brewed coffee. Rich and flavorful drip coffee. Perfect for your morning routine.')}>
+            <button
+                class="cursor-pointer" 
+                on:click={() => openModal('Drip', 'Classic brewed coffee. Rich and flavorful drip coffee. Perfect for your morning routine.')}
+            >
                 <Card.Root class="card">
                     <Card.Header>
                         <Card.Title>Drip</Card.Title>
@@ -35,10 +38,13 @@
                         <p class="card-footer">Perfect for your morning routine</p>
                     </Card.Content>
                 </Card.Root>
-            </div>
+            </button>
 
             <!-- Espresso -->
-            <div class="cursor-pointer" on:click={() => openModal('Espresso', 'Strong and bold coffee shot. Concentrated coffee served in a small cup. Ideal for a quick energy boost.')}>
+            <button
+                class="cursor-pointer"
+                on:click={() => openModal('Espresso', 'Strong and bold coffee shot. Concentrated coffee served in a small cup. Ideal for a quick energy boost.')}
+            >
                 <Card.Root class="card">
                     <Card.Header>
                         <Card.Title>Espresso</Card.Title>
@@ -48,10 +54,13 @@
                         <p class="card-footer">Ideal for a quick energy boost</p>
                     </Card.Content>
                 </Card.Root>
-            </div>
+            </button>
 
             <!-- Latte -->
-            <div class="cursor-pointer" on:click={() => openModal('Latte', 'Creamy espresso with milk. Rich espresso combined with steamed milk. A great choice for milk lovers.')}>
+            <button
+                class="cursor-pointer"
+                on:click={() => openModal('Latte', 'Creamy espresso with milk. Rich espresso combined with steamed milk. A great choice for milk lovers.')}
+            >
                 <Card.Root class="card">
                     <Card.Header>
                         <Card.Title>Latte</Card.Title>
@@ -61,10 +70,13 @@
                         <p class="card-footer">A great choice for milk lovers</p>
                     </Card.Content>
                 </Card.Root>
-            </div>
+            </button>
 
             <!-- Cafe Mocha -->
-            <div class="cursor-pointer" on:click={() => openModal('Cafe Mocha', 'Chocolatey espresso drink. Espresso mixed with steamed milk and chocolate. A sweet indulgence for coffee lovers.')}>
+            <button
+                class="cursor-pointer"
+                on:click={() => openModal('Cafe Mocha', 'Chocolatey espresso drink. Espresso mixed with steamed milk and chocolate. A sweet indulgence for coffee lovers.')}
+            >
                 <Card.Root class="card">
                     <Card.Header>
                         <Card.Title>Cafe Mocha</Card.Title>
@@ -74,10 +86,13 @@
                         <p class="card-footer">A sweet indulgence for coffee lovers</p>
                     </Card.Content>
                 </Card.Root>
-            </div>
+            </button>
 
             <!-- Cappuccino -->
-            <div class="cursor-pointer" on:click={() => openModal('Cappuccino', 'Frothy espresso drink. Equal parts espresso, steamed milk, and froth. Perfect for a rich coffee experience.')}>
+            <button
+                class="cursor-pointer"
+                on:click={() => openModal('Cappuccino', 'Frothy espresso drink. Equal parts espresso, steamed milk, and froth. Perfect for a rich coffee experience.')}
+            >
                 <Card.Root class="card">
                     <Card.Header>
                         <Card.Title>Cappuccino</Card.Title>
@@ -87,10 +102,13 @@
                         <p class="card-footer">Perfect for a rich coffee experience</p>
                     </Card.Content>
                 </Card.Root>
-            </div>
+            </button>
 
             <!-- Cold Brew -->
-            <div class="cursor-pointer" on:click={() => openModal('Cold Brew', 'Chilled coffee for hot days. Slow-steeped coffee served cold. A refreshing pick-me-up.')}>
+            <button
+                class="cursor-pointer"
+                on:click={() => openModal('Cold Brew', 'Chilled coffee for hot days. Slow-steeped coffee served cold. A refreshing pick-me-up.')}
+            >
                 <Card.Root class="card">
                     <Card.Header>
                         <Card.Title>Cold Brew</Card.Title>
@@ -100,7 +118,7 @@
                         <p class="card-footer">A refreshing pick-me-up</p>
                     </Card.Content>
                 </Card.Root>
-            </div>
+            </button>
         </div>
     </div>
     <BrewShortcuts/>

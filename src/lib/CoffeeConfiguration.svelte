@@ -67,20 +67,25 @@
     <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded-lg w-full max-w-lg relative">
             <!-- Heart Icon with Toggle -->
-            <div class="absolute top-2 right-2 cursor-pointer" on:click={toggleFavorite}>
+            <button 
+                type="button" 
+                class="absolute top-2 right-2 cursor-pointer"
+                on:click={toggleFavorite} 
+                aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+            >
                 <img 
                     src={isFavorited ? 'src/assets/filled_heart.png' : 'src/assets/outlined_heart.png'} 
-                    alt="Heart Icon" 
+                    alt={isFavorited ? 'Filled Heart Icon' : 'Outlined Heart Icon'} 
                     class={`transition-transform duration-300 ${isFavorited ? 'w-8 h-8' : 'w-6 h-6'}`} 
                 />
-            </div>
+            </button>
             
             <h2 class="text-xl font-bold mb-4">{title}</h2>
             <p class="mb-6">{description}</p>
 
             <!-- Roast Type Configuration (Button Group) -->
             <div class="mb-4">
-                <label class="block mb-1 font-bold">Roast Type</label>
+                <p class="block mb-1 font-bold">Roast Type</p>
                 <div class="flex space-x-2">
                     <button 
                         class={`px-4 py-2 border rounded ${roast === 'Decaf' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
@@ -96,7 +101,7 @@
 
             <!-- Strength Configuration (Button Group) -->
             <div class="mb-4">
-                <label class="block mb-1 font-bold">Strength</label>
+                <p class="block mb-1 font-bold">Strength</p>
                 <div class="flex space-x-2">
                     <button 
                         class={`px-4 py-2 border rounded ${strength === 'Mild' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
@@ -112,7 +117,7 @@
 
             <!-- Size Configuration (Button Group) -->
             <div class="mb-4">
-                <label class="block mb-1 font-bold">Size</label>
+                <p class="block mb-1 font-bold">Size</p>
                 <div class="flex space-x-2">
                     <button 
                         class={`px-4 py-2 border rounded ${size === '8 oz' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
