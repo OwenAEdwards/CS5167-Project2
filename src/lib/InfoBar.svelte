@@ -1,6 +1,8 @@
 <script lang="js">
   import * as Card from "$lib/components/ui/card";
   import { Progress } from "$lib/components/ui/progress";
+  //import { temp, pressure, waterAmt, beans, currentBrew, timer, caffAmt } from "$lib/stores";
+  import { dummyData, favorite, lastBrew } from "$lib/stores";
 
   // Mock data for coffee machine state
   let temperature = 90; // in Celsius
