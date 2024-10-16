@@ -1,6 +1,7 @@
 <script>
 import "./app.css";
 import CoffeeHome from "$lib/CoffeeHome.svelte";
+import InfoBar from "$lib/InfoBar.svelte";
 </script>
 
 <main>
@@ -9,7 +10,7 @@ import CoffeeHome from "$lib/CoffeeHome.svelte";
       <CoffeeHome />
     </div>
     <div class="twenty-container">
-      <p> Fucking hell mate</p>
+      <InfoBar />
     </div>
   </div>
 </main>
