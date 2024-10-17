@@ -134,13 +134,7 @@
         gap: 1rem; /* Space between items */
     }
     
-    /* Set a minimum height for the cards */
-    .card {
-        min-height: 300px; /* Set to desired minimum height */
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* Ensures space between header and content */
-    }
+
 
     /* Style for the card footer */
     .card-footer {
