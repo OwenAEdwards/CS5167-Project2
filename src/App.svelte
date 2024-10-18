@@ -8,7 +8,7 @@ import InfoBar from "$lib/InfoBar.svelte";
   <div class="container">
     <div class="eighty-container">
       <div class="header" style="display: flex; align-items: center; justify-content: space-between;">
-        <h1 style="font-size: 2em;">Title</h1>
+        <h1 style="font-size: 2em;">Smart Coffee Maker</h1>
         <select class="profile-select">
           <option value="profile1">Tobey Macguire</option>
           <option value="profile2">Andrew Garfield</option>
