@@ -96,7 +96,7 @@
                 <Card.Root class="card">
                     <Card.Header>
                         <Card.Title>Cappuccino</Card.Title>
-                        <Card.Description>Frothy espresso drink.</Card.Description>
+                        <Card.Description>Frothy espresso drink</Card.Description>
                     </Card.Header>
                     <Card.Content>
                         <p class="card-footer">Perfect for a rich coffee experience</p>
