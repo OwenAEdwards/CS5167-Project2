@@ -4,6 +4,7 @@
   import { dummyData, orderStore } from "$lib/stores";
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
+  import LastOrder from "$lib/LastOrder.svelte";
 
   let temperature = null;
   let pressure = null;
@@ -217,23 +218,7 @@
           </Card.Content>
       </Card.Root>
   </div>
-
-  <div class="mt-4">
-      {#if $lastOrder}
-          <Card.Root>
-              <Card.Header>
-                  <Card.Title>Last Order Details</Card.Title>
-              </Card.Header>
-              <Card.Content>
-                  <p>Roast: {$lastOrder.roast}</p>
-                  <p>Strength: {$lastOrder.strength}</p>
-                  <p>Size: {$lastOrder.size}</p>
-              </Card.Content>
-          </Card.Root>
-      {:else}
-          <p>No orders placed yet.</p>
-      {/if}
-  </div>
+  <LastOrder />
 </div>
 
 <style>
