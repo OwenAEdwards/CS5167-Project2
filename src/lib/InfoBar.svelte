@@ -197,7 +197,7 @@
       <!-- Caffeine in Milligrams -->
       <Card.Root>
           <Card.Header>
-              <Card.Title>Caffeine (mg)</Card.Title>
+              <Card.Title>Caffeine Content</Card.Title>
           </Card.Header>
           <Card.Content>
               <Progress value={caffeineMilligrams} />
