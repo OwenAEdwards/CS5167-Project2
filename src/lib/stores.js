@@ -19,13 +19,13 @@ export const getLastOrder = () => {
 };
 
 export const dummyData = writable([
-    {currentBrew: 'Drip', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '30', caffAmt: '1.5'},
-    {currentBrew: 'Espresso', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '30', caffAmt: '1.5'},
-    {currentBrew: 'Latte', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '30', caffAmt: '1.5'},
-    {currentBrew: 'Cafe Mocha', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '30', caffAmt: '1.5'},
-    {currentBrew: 'Cappuccino', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '30', caffAmt: '1.5'},
-    {currentBrew: 'Cad Brew', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '30', caffAmt: '1.5'},
+    {currentBrew: 'Drip', temp: '93', pressure: '1', waterAmt: '10', beans: '15', timer: '45', caffAmt: '95'},
+    {currentBrew: 'Espresso', temp: '93', pressure: '9', waterAmt: '1.5', beans: '20', timer: '30', caffAmt: '64'},
+    {currentBrew: 'Latte', temp: '67', pressure: '1', waterAmt: '1.5', beans: '10', timer: '40', caffAmt: '60'},
+    {currentBrew: 'Cafe Mocha', temp: '67', pressure: '1', waterAmt: '1.5', beans: '15', timer: '55', caffAmt: '80'},
+    {currentBrew: 'Cappuccino', temp: '63', pressure: '1', waterAmt: '1.5', beans: '10', timer: '50', caffAmt: '90'},
+    {currentBrew: 'Cold Brew', temp: '20', pressure: '1', waterAmt: '1.5', beans: '15', timer: '45', caffAmt: '95'},
 ]);
 
-export const favorite = writable({currentBrew: 'Drip', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '60', caffAmt: '60'});
-export const lastBrew = writable({currentBrew: 'Drip', temp: '200', pressure: '9', waterAmt: '1.5', beans: '20', timer: '60', caffAmt: '60'});
+export const favorite = writable({currentBrew: 'Drip', temp: '93', pressure: '1', waterAmt: '10', beans: '15', timer: '45', caffAmt: '95'});
+export const lastBrew = writable({currentBrew: 'Drip', temp: '93', pressure: '1', waterAmt: '10', beans: '15', timer: '45', caffAmt: '95'});

@@ -6,14 +6,14 @@
   import { writable } from "svelte/store";
 
   // Store variables for the coffee machine state
-  let temperature = 90; // in Celsius
-  let pressure = 15; // in bar
-  let waterAmount = 70; // percentage
-  let beansRemaining = 50; // percentage
+  let temperature = 20; // in Celsius
+  let pressure = 1; // in bar
+  let waterAmount = 100; // percentage
+  let beansRemaining = 100; // percentage
   let currentCoffee = "Espresso";
 
   // Timer setup
-  let countdownTime = 45; // Countdown in seconds
+  let countdownTime = 0; // Countdown in seconds
   let timer = countdownTime;
 
   // Caffeine in milligrams
