@@ -5,17 +5,10 @@ export const orderStore = writable([]);
 // Function to add an order to the store
 export const addOrder = (orderDetails) => {
     orderStore.update(orders => {
+        // Update lastBrew store with the new order
+        lastBrew.set(orderDetails);  // Set the last brew to the new order
         return [...orders, orderDetails];
     });
-};
-
-// Function to get the last order from the store
-export const getLastOrder = () => {
-    let lastOrder;
-    orderStore.subscribe(orders => {
-        lastOrder = orders[orders.length - 1]; // Get the last order
-    })();
-    return lastOrder;
 };
 
 export const dummyData = writable([
@@ -28,4 +21,4 @@ export const dummyData = writable([
 ]);
 
 export const favorite = writable({currentBrew: 'Drip', temp: '93', pressure: '1', waterAmt: '10', beans: '15', timer: '45', caffAmt: '95'});
-export const lastBrew = writable({currentBrew: 'Drip', temp: '93', pressure: '1', waterAmt: '10', beans: '15', timer: '45', caffAmt: '95'});
+export const lastBrew = writable(null);

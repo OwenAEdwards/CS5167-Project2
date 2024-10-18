@@ -1,10 +1,39 @@
-<script>
+<script lang="js">
+    import { addOrder, lastBrew } from "$lib/stores";
+    import { onDestroy } from "svelte";
+
+    let lastOrder = null;
+
+    // Subscribe to the lastBrew store to update lastOrder reactively
+    const unsubscribe = lastBrew.subscribe(order => {
+        lastOrder = order; // Update lastOrder with the latest brew
+    });
+
+    // Cleanup the subscription when the component is destroyed
+    onDestroy(() => {
+        unsubscribe();
+    });
+
     function brewLast() {
-        console.log("Brew Last button clicked");
+        if (lastOrder) {
+            console.log("Brewing last order:", lastOrder);
+            addOrder(lastOrder); // Add last order to orderStore
+            // Here you can also trigger any other logic to start brewing
+        } else {
+            console.log("No last order found.");
+        }
     }
 
     function brewFavorite() {
-        console.log("Brew Favorite button clicked");
+        const favoriteOrder = {
+            title: "Drip",
+            roast: "Medium",
+            strength: "Regular",
+            size: "Medium"
+        }; // Example of favorite order structure
+        console.log("Brewing favorite order:", favoriteOrder);
+        addOrder(favoriteOrder); // Add favorite order to orderStore
+        // Similar brewing logic can be added here as needed
     }
 </script>
 
