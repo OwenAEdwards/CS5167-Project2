@@ -1,5 +1,5 @@
 <script lang="js">
-    import { addOrder, lastBrew } from "$lib/stores";
+    import { addOrder, favoriteBrew, lastBrew } from "$lib/stores";
     import { onDestroy } from "svelte";
 
     let lastOrder = null;
@@ -9,9 +9,16 @@
         lastOrder = order; // Update lastOrder with the latest brew
     });
 
-    // Cleanup the subscription when the component is destroyed
+    // Subscribe to the favoriteBrew store
+    let currentFavorite = null;
+    const favoriteUnsubscribe = favoriteBrew.subscribe(favorite => {
+        currentFavorite = favorite; // Update currentFavorite with the favorite brew
+    });
+
+    // Cleanup the subscriptions when the component is destroyed
     onDestroy(() => {
         unsubscribe();
+        favoriteUnsubscribe();
     });
 
     function brewLast() {
@@ -25,15 +32,13 @@
     }
 
     function brewFavorite() {
-        const favoriteOrder = {
-            title: "Drip",
-            roast: "Medium",
-            strength: "Regular",
-            size: "Medium"
-        }; // Example of favorite order structure
-        console.log("Brewing favorite order:", favoriteOrder);
-        addOrder(favoriteOrder); // Add favorite order to orderStore
-        // Similar brewing logic can be added here as needed
+        if (currentFavorite) {
+            console.log("Brewing favorite order:", currentFavorite);
+            addOrder(currentFavorite); // Add favorite order to orderStore
+            // Similar brewing logic can be added here as needed
+        } else {
+            console.log("No favorite order found.");
+        }
     }
 </script>
 

@@ -20,5 +20,5 @@ export const dummyData = writable([
     {currentBrew: 'Cold Brew', temp: '20', pressure: '1', waterAmt: '1.5', beans: '15', timer: '45', caffAmt: '95'},
 ]);
 
-export const favorite = writable({currentBrew: 'Drip', temp: '93', pressure: '1', waterAmt: '10', beans: '15', timer: '45', caffAmt: '95'});
+export const favoriteBrew = writable(null);
 export const lastBrew = writable(null);

@@ -1,5 +1,6 @@
 <script>
-    import { addOrder } from "$lib/stores"; // Import addOrder from stores.js
+    import { addOrder, favoriteBrew } from "$lib/stores";
+    import { onMount } from 'svelte';
 
     import filled_heart from "../assets/images/filled_heart.png"; // Adjust the path as necessary
     import outlined_heart from "../assets/images/outlined_heart.png"; // Adjust the path as necessary
@@ -45,7 +46,28 @@
     // Toggle the heart icon between filled and outlined
     function toggleFavorite() {
         isFavorited = !isFavorited;
+        if (isFavorited) {
+            // Set this brew as the favorite
+            favoriteBrew.set({ title, roast, strength, size });
+        } else {
+            // Remove the favorite if already favorited
+            favoriteBrew.set(null);
+        }
     }
+
+    // Check if the current brew is the favorite when component mounts
+    onMount(() => {
+        const unsubscribe = favoriteBrew.subscribe(favorite => {
+            isFavorited = favorite && favorite.title === title; // Mark as favorited if it matches the current title
+        });
+
+        // Reset isFavorited when modal is opened
+        if (isOpen) {
+            isFavorited = false; // Reset the favorite state
+        }
+
+        return () => unsubscribe(); // Cleanup subscription on component destruction
+    });
 
     // Function to handle keydown event for Escape key
     function handleKeydown(event) {
@@ -57,6 +79,7 @@
     // Add event listener for keydown when modal is open
     $: if (isOpen) {
         window.addEventListener("keydown", handleKeydown);
+        isFavorited = false; // Reset isFavorited when opening the modal
     }
 
     // Cleanup the event listener when modal is closed or component is destroyed
@@ -66,24 +89,17 @@
 </script>
 
 {#if isOpen}
-    <div
-        class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50"
-    >
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded-lg w-full max-w-lg relative">
             <!-- Heart Icon with Toggle -->
             <button 
                 type="button" 
-               
                 class="absolute top-2 right-2 cursor-pointer"
-               
                 on:click={toggleFavorite}
-             
                 aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
             >
                 <img
-                    src={isFavorited
-                        ? filled_heart
-                        : outlined_heart}
+                    src={isFavorited ? filled_heart : outlined_heart}
                     alt={isFavorited ? 'Filled Heart Icon' : 'Outlined Heart Icon'}
                     class={`transition-transform duration-300 ${isFavorited ? "w-8 h-8" : "w-6 h-6"}`}
                 />
@@ -98,18 +114,16 @@
                 <div class="flex space-x-2">
                     <button
                         class={`px-4 py-2 border rounded ${roast === "Decaf" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
-                        on:click={() => setRoastType("Decaf")}>Decaf</button
-                    >
+                        on:click={() => setRoastType("Decaf")}
+                    >Decaf</button>
                     <button
                         class={`px-4 py-2 border rounded ${roast === "Light Roast" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
                         on:click={() => setRoastType("Light Roast")}
-                        >Light Roast</button
-                    >
+                    >Light Roast</button>
                     <button
                         class={`px-4 py-2 border rounded ${roast === "Dark Roast" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
                         on:click={() => setRoastType("Dark Roast")}
-                        >Dark Roast</button
-                    >
+                    >Dark Roast</button>
                 </div>
             </div>
 
@@ -119,18 +133,16 @@
                 <div class="flex space-x-2">
                     <button
                         class={`px-4 py-2 border rounded ${strength === "Mild" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
-                        on:click={() => setStrengthType("Mild")}>Mild</button
-                    >
+                        on:click={() => setStrengthType("Mild")}
+                    >Mild</button>
                     <button
                         class={`px-4 py-2 border rounded ${strength === "Regular" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
                         on:click={() => setStrengthType("Regular")}
-                        >Regular</button
-                    >
+                    >Regular</button>
                     <button
                         class={`px-4 py-2 border rounded ${strength === "Strong" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
                         on:click={() => setStrengthType("Strong")}
-                        >Strong</button
-                    >
+                    >Strong</button>
                 </div>
             </div>
 
@@ -140,16 +152,16 @@
                 <div class="flex space-x-2">
                     <button
                         class={`px-4 py-2 border rounded ${size === "8 oz" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
-                        on:click={() => setSizeType("8 oz")}>8 oz</button
-                    >
+                        on:click={() => setSizeType("8 oz")}
+                    >8 oz</button>
                     <button
                         class={`px-4 py-2 border rounded ${size === "10 oz" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
-                        on:click={() => setSizeType("10 oz")}>10 oz</button
-                    >
+                        on:click={() => setSizeType("10 oz")}
+                    >10 oz</button>
                     <button
                         class={`px-4 py-2 border rounded ${size === "12 oz" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}
-                        on:click={() => setSizeType("12 oz")}>12 oz</button
-                    >
+                        on:click={() => setSizeType("12 oz")}
+                    >12 oz</button>
                 </div>
             </div>
 
@@ -158,13 +170,11 @@
                 <button
                     on:click={onClose}
                     class="bg-gray-500 text-white px-4 py-2 rounded"
-                    >Cancel</button
-                >
+                >Cancel</button>
                 <button
                     on:click={handleOrder}
                     class="bg-green-500 text-white px-4 py-2 rounded"
-                    >Order</button
-                >
+                >Order</button>
             </div>
         </div>
     </div>
