@@ -1,19 +1,27 @@
 <script lang="js">
-    import { addOrder, favoriteBrew, lastBrew, isBrewing, resourcesStore } from "$lib/stores";
+    import { addOrder, isBrewing, resourcesStore, getLastBrew, getFavoriteBrew, lastBrew, favoriteBrew } from "$lib/stores";
     import { onDestroy } from "svelte";
-    import { get } from "svelte/store"; // Import get from svelte/store to read the store value
+    import { get } from "svelte/store";
 
+    export let userId; // User ID passed from parent component
+
+    // Set lastOrder and currentFavorite to null
     let lastOrder = null;
+    let currentFavorite = null;
 
-    // Subscribe to the lastBrew store to update lastOrder reactively
-    const lastBrewunsubscribe = lastBrew.subscribe(order => {
-        lastOrder = order; // Update lastOrder with the latest brew
+    // Subscribe to the lastBrewStore and favoriteBrewStore
+    const lastBrewUnsubscribe = lastBrew.subscribe(brew => {
+        if (brew && brew.userId === userId) {
+            lastOrder = brew.brew;
+            console.log("lastOrder (updated):", lastOrder);
+        }
     });
 
-    // Subscribe to the favoriteBrew store
-    let currentFavorite = null;
-    const favoriteUnsubscribe = favoriteBrew.subscribe(favorite => {
-        currentFavorite = favorite; // Update currentFavorite with the favorite brew
+    const favoriteBrewUnsubscribe = favoriteBrew.subscribe(brew => {
+        if (brew && brew.userId === userId) {
+            currentFavorite = brew.brew;
+            console.log("currentFavorite (updated):", currentFavorite);
+        }
     });
 
     // Subscribe to resourcesStore for waterAmount and beansRemaining
@@ -26,64 +34,63 @@
 
     // Cleanup the subscriptions when the component is destroyed
     onDestroy(() => {
-        lastBrewunsubscribe();
-        favoriteUnsubscribe();
+        lastBrewUnsubscribe();
+        favoriteBrewUnsubscribe();
         resourcesUnsubscribe();
     });
 
-    function brewLast() {
-        // Check if a coffee is already brewing
+    function isResourceSufficient() {
+        if (waterAmount <= 0 || beansRemaining <= 0) {
+            alert("Insufficient resources to brew coffee. Please refill water or beans.");
+            return false;
+        }
+        return true;
+    }
+
+    function brew(order) {
         if (get(isBrewing)) {
-            alert("A coffee is already brewing! Please wait until it's finished."); // Alert if brewing
-            return; // Prevent further execution
+            alert("A coffee is already brewing! Please wait until it's finished.");
+            return;
         }
 
+        if (!order) {
+            console.log("No order found for user:", userId);
+            return;
+        }
+
+        if (!isResourceSufficient()) {
+            return;
+        }
+
+        // Start brewing
+        isBrewing.set(true);
+        console.log(`Brewing order for user: ${userId}`, order);
+        addOrder(order);
+
+        // No simulation of brewing time here
+    }
+
+    function brewLast() {
+        // Fetch the last order just before brewing
+        lastOrder = getLastBrew(userId) || lastOrder; // Refresh lastOrder
+        console.log("Last order before brewing:", lastOrder);
+        
         if (lastOrder) {
-            // Check if there's enough water and beans for the brew
-            if (waterAmount <= 0 || beansRemaining <= 0) {
-                alert("Insufficient resources to brew coffee. Please refill water or beans.");
-                return;
-            }
-            
-            isBrewing.set(true); // Set brewing state to true
-            console.log("Brewing last order:", lastOrder);
-            addOrder(lastOrder); // Add last order to orderStore
-            
-            // Simulate brewing process, and reset isBrewing after completion
-            setTimeout(() => {
-                isBrewing.set(false); // Reset brewing state after process
-                console.log("Brewing finished.");
-            }, 3000); // Simulate a 3-second brewing time
+            brew(lastOrder);
         } else {
-            console.log("No last order found.");
+            console.log("No last order available.");
         }
     }
 
     function brewFavorite() {
-        // Check if a coffee is already brewing
-        if (get(isBrewing)) {
-            alert("A coffee is already brewing! Please wait until it's finished."); // Alert if brewing
-            return; // Prevent further execution
-        }
-
+        // Fetch the favorite order just before brewing
+        currentFavorite = getFavoriteBrew(userId) || currentFavorite; // Refresh currentFavorite
+        console.log("Current favorite before brewing:", currentFavorite);
+        
         if (currentFavorite) {
-            // Check if there's enough water and beans for the brew
-            if (waterAmount <= 0 || beansRemaining <= 0) {
-                alert("Insufficient resources to brew coffee. Please refill water or beans.");
-                return;
-            }
-            
-            isBrewing.set(true); // Set brewing state to true
-            console.log("Brewing favorite order:", currentFavorite);
-            addOrder(currentFavorite); // Add favorite order to orderStore
-            
-            // Simulate brewing process, and reset isBrewing after completion
-            setTimeout(() => {
-                isBrewing.set(false); // Reset brewing state after process
-                console.log("Brewing finished.");
-            }, 3000); // Simulate a 3-second brewing time
+            brew(currentFavorite);
         } else {
-            console.log("No favorite order found.");
+            console.log("No favorite order available.");
         }
     }
 </script>

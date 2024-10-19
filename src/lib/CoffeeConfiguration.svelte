@@ -1,39 +1,40 @@
 <script>
-    import { addOrder, favoriteBrew, isBrewing, resourcesStore } from "$lib/stores";
     import { onMount } from 'svelte';
-    import { get } from 'svelte/store'; // Import the 'get' function
+    import { addOrder, favoriteBrew, isBrewing, resourcesStore, lastBrew, setCurrentUser, getLastBrew, getFavoriteBrew, updateFavoriteBrew, updateLastBrew } from "$lib/stores"; // Importing necessary stores
+    import { get } from 'svelte/store';
 
-    import filled_heart from "../assets/images/filled_heart.png"; // Adjust the path as necessary
-    import outlined_heart from "../assets/images/outlined_heart.png"; // Adjust the path as necessary
+    import filled_heart from "../assets/images/filled_heart.png"; 
+    import outlined_heart from "../assets/images/outlined_heart.png"; 
 
     export let isOpen = false;
     export let onClose;
     export let title = "";
     export let description = "";
+    export let userId; // Added userId to identify the current user
 
     // Variables for configuration
-    let roast = "Light Roast"; // Default option
-    let strength = "Regular"; // Default option
-    let size = "10 oz"; // Default option
-
-    let isFavorited = false; // Tracks whether the heart is filled or not
+    let roast = "Light Roast"; 
+    let strength = "Regular"; 
+    let size = "10 oz"; 
+    let isFavorited = false; 
 
     // Function to set the selected option
     function setRoastType(type) {
         roast = type;
+        updateFavoritedState(); // Check favorited state when roast type changes
     }
 
     function setStrengthType(type) {
         strength = type;
+        updateFavoritedState(); // Check favorited state when roast type changes
     }
 
     function setSizeType(type) {
         size = type;
+        updateFavoritedState(); // Check favorited state when roast type changes
     }
 
-    // Modify the handleOrder function
     function handleOrder() {
-        // Check the brewing status
         const brewingStatus = get(isBrewing);
 
         if (brewingStatus) {
@@ -41,7 +42,6 @@
             return;
         }
 
-        // Check if we can brew coffee
         const resources = get(resourcesStore);
 
         if (resources.waterAmount <= 0 || resources.beansRemaining <= 0) {
@@ -55,57 +55,81 @@
             strength,
             size,
         };
+
         console.log("Order details:", orderDetails);
-        addOrder(orderDetails); // Add the order to the store
-        isBrewing.set(true); // Update isBrewing to true when a new order is placed
+        addOrder(orderDetails);
+        isBrewing.set(true); // Update brewing status
         onClose(); // Close modal after ordering
+
+        // Save the order as the last brew for the current user
+        lastBrew.set(orderDetails); // Store the last brew correctly
+        updateUserLastBrew(userId, orderDetails); // Update the user's last brew in userStore
     }
 
-    // Toggle the heart icon between filled and outlined
     function toggleFavorite() {
-        isFavorited = !isFavorited;
-        if (isFavorited)
-        {
-            // Set this brew as the favorite
-            favoriteBrew.set({ title, roast, strength, size });
-        }
-        else
-        {
-            // Remove the favorite if already favorited
+        const currentBrew = { title, roast, strength, size };
+        const userFavorite = getFavoriteBrew(userId);
+
+        // Toggle logic
+        if (userFavorite && userFavorite.title === title && userFavorite.roast === roast && userFavorite.strength === strength && userFavorite.size === size) {
+            // Current brew is already favored; unfavorite it
+            isFavorited = false;
             favoriteBrew.set(null);
+            updateUserFavoriteBrew(userId, null);
+        } else {
+            // Current brew is not favored; favorite it
+            isFavorited = true;
+            favoriteBrew.set(currentBrew);
+            updateUserFavoriteBrew(userId, currentBrew);
         }
     }
 
-    // Check if the current brew is the favorite when component mounts
+    function updateFavoritedState() {
+        const userFavorite = getFavoriteBrew(userId);
+        isFavorited = userFavorite && userFavorite.title === title && userFavorite.roast === roast && userFavorite.strength === strength && userFavorite.size === size;
+    }
+
     onMount(() => {
-        const unsubscribe = favoriteBrew.subscribe(favorite => {
-            isFavorited = favorite && favorite.title === title; // Mark as favorited if it matches the current title
-        });
+        // Set the current user
+        setCurrentUser(userId);
 
-        // Reset isFavorited when modal is opened
-        if (isOpen) {
-            isFavorited = false; // Reset the favorite state
+        // Retrieve last brew for the user
+        const userLastBrew = getLastBrew(userId);
+
+        // Set the roast, strength, and size from the user's last brew if it exists
+        if (userLastBrew) {
+            roast = userLastBrew.roast;
+            strength = userLastBrew.strength;
+            size = userLastBrew.size;
         }
-
-        return () => unsubscribe(); // Cleanup subscription on component destruction
     });
 
-    // Function to handle keydown event for Escape key
     function handleKeydown(event) {
         if (event.key === "Escape") {
             onClose(); // Close modal
         }
     }
 
-    // Add event listener for keydown when modal is open
     $: if (isOpen) {
+        updateFavoritedState(); // Check if current brew is favorited
         window.addEventListener("keydown", handleKeydown);
-        isFavorited = false; // Reset isFavorited when opening the modal
     }
 
-    // Cleanup the event listener when modal is closed or component is destroyed
     $: if (!isOpen) {
         window.removeEventListener("keydown", handleKeydown);
+    }
+
+    // Helper functions to update user data
+    function updateUserLastBrew(userId, lastBrewDetails) {
+        lastBrew.set(lastBrewDetails); // Update the last brew in the store
+        // Call the updateLastBrew function from stores.js
+        updateLastBrew(userId, lastBrewDetails);
+    }
+
+    function updateUserFavoriteBrew(userId, favoriteBrewDetails) {
+        favoriteBrew.set(favoriteBrewDetails); // Update favorite brew in the store
+        // Call the updateFavoriteBrew function from stores.js
+        updateFavoriteBrew(userId, favoriteBrewDetails);
     }
 </script>
 

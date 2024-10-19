@@ -3,6 +3,9 @@
     import BrewShortcuts from "./BrewShortcuts.svelte";
     import CoffeeConfiguration from "./CoffeeConfiguration.svelte";
 
+    // Receive the userId prop
+    export let userId;  // Use 'export' to receive the prop from the parent component
+
     let isModalOpen = false;
     let modalTitle = '';
     let modalDescription = '';
@@ -121,9 +124,9 @@
             </button>
         </div>
     </div>
-    <BrewShortcuts/>
+    <BrewShortcuts userId={userId} />
     <!-- Coffee Configuration (Modal) -->
-    <CoffeeConfiguration isOpen={isModalOpen} onClose={closeModal} title={modalTitle} description={modalDescription} />
+    <CoffeeConfiguration isOpen={isModalOpen} onClose={closeModal} title={modalTitle} description={modalDescription} userId={userId} />
 </main>
 
 <style>
