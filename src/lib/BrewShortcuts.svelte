@@ -1,6 +1,7 @@
 <script lang="js">
-    import { addOrder, favoriteBrew, lastBrew } from "$lib/stores";
+    import { addOrder, favoriteBrew, lastBrew, isBrewing } from "$lib/stores";
     import { onDestroy } from "svelte";
+    import { get } from "svelte/store"; // Import get from svelte/store to read the store value
 
     let lastOrder = null;
 
@@ -22,20 +23,44 @@
     });
 
     function brewLast() {
+        // Check if a coffee is already brewing
+        if (get(isBrewing)) {
+            alert("A coffee is already brewing! Please wait until it's finished."); // Alert if brewing
+            return; // Prevent further execution
+        }
+
         if (lastOrder) {
+            isBrewing.set(true); // Set brewing state to true
             console.log("Brewing last order:", lastOrder);
             addOrder(lastOrder); // Add last order to orderStore
-            // Here you can also trigger any other logic to start brewing
+            
+            // Simulate brewing process, and reset isBrewing after completion
+            setTimeout(() => {
+                isBrewing.set(false); // Reset brewing state after process
+                console.log("Brewing finished.");
+            }, 3000); // Simulate a 3-second brewing time
         } else {
             console.log("No last order found.");
         }
     }
 
     function brewFavorite() {
+        // Check if a coffee is already brewing
+        if (get(isBrewing)) {
+            alert("A coffee is already brewing! Please wait until it's finished."); // Alert if brewing
+            return; // Prevent further execution
+        }
+
         if (currentFavorite) {
+            isBrewing.set(true); // Set brewing state to true
             console.log("Brewing favorite order:", currentFavorite);
             addOrder(currentFavorite); // Add favorite order to orderStore
-            // Similar brewing logic can be added here as needed
+            
+            // Simulate brewing process, and reset isBrewing after completion
+            setTimeout(() => {
+                isBrewing.set(false); // Reset brewing state after process
+                console.log("Brewing finished.");
+            }, 3000); // Simulate a 3-second brewing time
         } else {
             console.log("No favorite order found.");
         }
