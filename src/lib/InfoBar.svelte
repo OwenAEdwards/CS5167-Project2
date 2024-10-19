@@ -1,7 +1,7 @@
 <script lang="js">
   import * as Card from "$lib/components/ui/card";
   import { Progress } from "$lib/components/ui/progress";
-  import { dummyData, orderStore } from "$lib/stores";
+  import { dummyData, orderStore, isBrewing } from "$lib/stores";
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
   import LastOrder from "$lib/LastOrder.svelte";
@@ -111,15 +111,20 @@
 
   function startCountdown() {
     clearInterval(countdownInterval); // Clear any existing countdown
+    isBrewing.set(true); // Set brewing status to true
     countdownInterval = setInterval(() => {
-      timer -= 1;
-      if (timer <= 0) {
-        clearInterval(countdownInterval);
-        clearIntervals(); // Stop water/beans countdown
-        resetBrew(); // Reset current coffee brewing
-      }
+        timer -= 1;
+        if (timer <= 0) {
+            clearInterval(countdownInterval);
+            clearIntervals(); // Stop water/beans countdown
+            resetBrew(); // Reset current coffee brewing
+            
+            // Set isBrewing to false when brewing is finished
+            isBrewing.set(false);
+        }
     }, 1000);
   }
+
 
   function clearIntervals() {
     clearInterval(waterInterval);
@@ -163,8 +168,8 @@
               <Card.Title>Water Amount</Card.Title>
           </Card.Header>
           <Card.Content>
-              <Progress value={waterAmount} />
-              <p>{waterAmount}%</p> <!-- Always show progress bar and percentage -->
+              <Progress value={Math.min(waterAmount, 100)} />
+              <p>{Math.min(waterAmount, 100)}%</p> <!-- Always show progress bar and percentage -->
           </Card.Content>
       </Card.Root>
 
@@ -173,8 +178,8 @@
               <Card.Title>Beans Remaining</Card.Title>
           </Card.Header>
           <Card.Content>
-              <Progress value={beansRemaining} />
-              <p>{beansRemaining}%</p> <!-- Always show progress bar and percentage -->
+              <Progress value={Math.min(beansRemaining, 100)} />
+              <p>{Math.min(beansRemaining, 100)}%</p> <!-- Always show progress bar and percentage -->
           </Card.Content>
       </Card.Root>
   </div>
@@ -210,8 +215,8 @@
           </Card.Header>
           <Card.Content>
               {#if caffeineMilligrams !== null}
-                <Progress value={caffeineMilligrams} />
-                <p>{caffeineMilligrams} mg</p>
+                <Progress value={Math.min(caffeineMilligrams, 100)} />
+                <p>{Math.min(caffeineMilligrams, 100)} mg</p>
               {:else}
                 <p>No brew selected</p>
               {/if}

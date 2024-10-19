@@ -1,6 +1,7 @@
 <script>
-    import { addOrder, favoriteBrew } from "$lib/stores";
+    import { addOrder, favoriteBrew, isBrewing } from "$lib/stores";
     import { onMount } from 'svelte';
+    import { get } from 'svelte/store'; // Import the 'get' function
 
     import filled_heart from "../assets/images/filled_heart.png"; // Adjust the path as necessary
     import outlined_heart from "../assets/images/outlined_heart.png"; // Adjust the path as necessary
@@ -32,6 +33,14 @@
 
     // Function to handle "Order" button click
     function handleOrder() {
+        // Get the current value of isBrewing from the store
+        const brewingStatus = get(isBrewing);
+
+        if (brewingStatus) {
+            alert("Please wait until the current coffee is finished brewing before placing a new order.");
+            return;
+        }
+
         const orderDetails = {
             title,
             roast,
@@ -40,16 +49,20 @@
         };
         console.log("Order details:", orderDetails);
         addOrder(orderDetails); // Add the order to the store
+        isBrewing.set(true); // Update isBrewing to true when a new order is placed
         onClose(); // Close modal after ordering
     }
 
     // Toggle the heart icon between filled and outlined
     function toggleFavorite() {
         isFavorited = !isFavorited;
-        if (isFavorited) {
+        if (isFavorited)
+        {
             // Set this brew as the favorite
             favoriteBrew.set({ title, roast, strength, size });
-        } else {
+        }
+        else
+        {
             // Remove the favorite if already favorited
             favoriteBrew.set(null);
         }

@@ -22,3 +22,4 @@ export const dummyData = writable([
 
 export const favoriteBrew = writable(null);
 export const lastBrew = writable(null);
+export const isBrewing = writable(false);
