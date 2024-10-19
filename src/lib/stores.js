@@ -23,3 +23,7 @@ export const dummyData = writable([
 export const favoriteBrew = writable(null);
 export const lastBrew = writable(null);
 export const isBrewing = writable(false);
+export const resourcesStore = writable({
+    waterAmount: 100, // Initial water amount
+    beansRemaining: 100, // Initial beans remaining
+  });

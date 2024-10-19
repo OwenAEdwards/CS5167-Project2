@@ -1,5 +1,5 @@
 <script>
-    import { addOrder, favoriteBrew, isBrewing } from "$lib/stores";
+    import { addOrder, favoriteBrew, isBrewing, resourcesStore } from "$lib/stores";
     import { onMount } from 'svelte';
     import { get } from 'svelte/store'; // Import the 'get' function
 
@@ -31,13 +31,21 @@
         size = type;
     }
 
-    // Function to handle "Order" button click
+    // Modify the handleOrder function
     function handleOrder() {
-        // Get the current value of isBrewing from the store
+        // Check the brewing status
         const brewingStatus = get(isBrewing);
 
         if (brewingStatus) {
             alert("Please wait until the current coffee is finished brewing before placing a new order.");
+            return;
+        }
+
+        // Check if we can brew coffee
+        const resources = get(resourcesStore);
+
+        if (resources.waterAmount <= 0 || resources.beansRemaining <= 0) {
+            alert("Insufficient resources to brew coffee. Please refill water or beans.");
             return;
         }
 

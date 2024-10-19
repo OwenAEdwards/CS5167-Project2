@@ -1,7 +1,7 @@
 <script lang="js">
   import * as Card from "$lib/components/ui/card";
   import { Progress } from "$lib/components/ui/progress";
-  import { dummyData, orderStore, isBrewing } from "$lib/stores";
+  import { dummyData, orderStore, isBrewing, resourcesStore } from "$lib/stores";
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
   import LastOrder from "$lib/LastOrder.svelte";
@@ -16,6 +16,12 @@
   let caffeineMilligrams = null;
   let lastOrder = writable(null);
   let waterInterval, beansInterval, countdownInterval;
+
+  // Subscribe to the resourcesStore to keep local variables in sync
+  resourcesStore.subscribe(resources => {
+    waterAmount = resources.waterAmount;
+    beansRemaining = resources.beansRemaining;
+  });
 
   const unsubscribeOrder = orderStore.subscribe(orders => {
     const latestOrder = orders[orders.length - 1] || null;
@@ -80,6 +86,8 @@
       waterInterval = setInterval(() => {
         if (timer > 0 && waterAmount > 0) {
           waterAmount -= 1; // Gradually decrease water amount
+          // Update the store whenever the water amount changes
+          resourcesStore.set({ waterAmount, beansRemaining });
         } else {
           clearInterval(waterInterval);
         }
@@ -93,6 +101,8 @@
       beansInterval = setInterval(() => {
         if (timer > 0 && beansRemaining > 0) {
           beansRemaining -= 0.5; // Gradually decrease beans remaining
+          // Update the store whenever beans remaining changes
+          resourcesStore.set({ waterAmount, beansRemaining });
         } else {
           clearInterval(beansInterval);
         }
@@ -109,22 +119,30 @@
     // Keep waterAmount and beansRemaining unchanged after the brew concludes
   }
 
-  function startCountdown() {
-    clearInterval(countdownInterval); // Clear any existing countdown
-    isBrewing.set(true); // Set brewing status to true
-    countdownInterval = setInterval(() => {
-        timer -= 1;
-        if (timer <= 0) {
-            clearInterval(countdownInterval);
-            clearIntervals(); // Stop water/beans countdown
-            resetBrew(); // Reset current coffee brewing
-            
-            // Set isBrewing to false when brewing is finished
-            isBrewing.set(false);
-        }
-    }, 1000);
+  function canBrew() {
+    if (waterAmount <= 0 && beansRemaining <= 0) {
+      alert("Insufficient resources to brew coffee. Please refill water or beans.");
+      return false;
+    }
+    return true;
   }
 
+  function startCountdown() {
+    clearInterval(countdownInterval); // Clear any existing countdown
+    if (!canBrew()) return; // Check if brewing is possible
+    isBrewing.set(true); // Set brewing status to true
+    countdownInterval = setInterval(() => {
+      timer -= 1;
+      if (timer <= 0) {
+        clearInterval(countdownInterval);
+        clearIntervals(); // Stop water/beans countdown
+        resetBrew(); // Reset current coffee brewing
+        
+        // Set isBrewing to false when brewing is finished
+        isBrewing.set(false);
+      }
+    }, 1000);
+  }
 
   function clearIntervals() {
     clearInterval(waterInterval);
