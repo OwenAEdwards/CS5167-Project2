@@ -100,10 +100,26 @@
         margin: 5px;
         padding: 10px;
         font-size: 16px;
+        border: 1px solid #dbcfc2;
     }
 </style>
 
-<div>
-    <button on:click={brewLast}>Brew Last</button>
-    <button on:click={brewFavorite}>Brew Favorite</button>
+<div class="pl-3">
+    <button
+        on:click={brewLast}
+        class="m-1 p-1 text-base border-1 font-medium border-[#bd672e] rounded-sm transition duration-300 
+               bg-[#f9e3cf] text-[#955023] hover:bg-primary hover:text-primary-foreground"
+    >
+        Brew Last
+    </button>
+    <button
+        on:click={brewFavorite}
+        class="m-1 p-1 text-base font-medium border-1 border-[#c89e82] rounded-md transition duration-300 
+               bg-[#f9e3cf] text-[#955023] hover:bg-primary hover:text-primary-foreground"
+    >
+        Brew Favorite
+    </button>
 </div>
+
+
+

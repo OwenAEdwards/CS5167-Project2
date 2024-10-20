@@ -15,7 +15,7 @@
   <div class="container">
     <div class="eighty-container">
       <div class="header" style="display: flex; align-items: center; justify-content: space-between;">
-        <h1 style="font-size: 2em;">Smart Coffee Maker</h1>
+        <h1 class="header-title">Smart Coffee Maker</h1>
         <select class="profile-select" on:change={handleProfileChange}>
           <option value="profile1">Tobey Macguire</option>
           <option value="profile2">Andrew Garfield</option>

@@ -1,73 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
- 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
- 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
- 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
- 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
- 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
- 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
- 
-    --destructive: 0 72.2% 50.6%;
-    --destructive-foreground: 210 40% 98%;
- 
-    --ring: 222.2 84% 4.9%;
- 
-    --radius: 0.5rem;
+    --background: 36 10% 94%; /* Light warm grey */
+    --foreground: 30 51% 26%; /* Dark text */
+
+    --muted: 22 25% 60%; /* Lighter grey-beige for muted elements */
+    --muted-foreground: 22 16% 46%; /* Softer contrast foreground for muted */
+
+    --popover: 36 10% 100%; /* White for popovers */
+    --popover-foreground: 33 30% 22%; /* Dark text */
+
+    --card: 36 10% 100%; /* White background for cards */
+    --card-foreground: 24 62% 36%; /* Dark text for cards */
+
+    --border: 30 20% 80%; /* Soft grey for borders */
+    --input: 30 20% 80%; /* Same as border for inputs */
+
+    --primary: 30 51% 26%; /* Coffee brown for primary background */
+    --primary-foreground: 30 30% 98%; /* Light cream text on dark backgrounds */
+
+    --secondary: 36 10% 94%; /* Light warm grey for secondary background */
+    --secondary-foreground: 22 16% 20%; /* Dark text for secondary */
+
+    --accent: 28 60% 40%; /* Warm caramel accent color */
+    --accent-foreground: 36 100% 98%; /* Light foreground on accents */
+
+    --destructive: 0 72% 50%; /* Red for destructive actions */
+    --destructive-foreground: 0 0% 98%; /* Light text on destructive */
+
+    --ring: 22 16% 46%; /* Ring color for focus states */
+
+    --radius: 0.5rem; /* Border radius */
   }
- 
+
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
- 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
- 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
- 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
- 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
- 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
- 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
- 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
- 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
- 
-    --ring: 212.7 26.8% 83.9%;
+    --background: 22 16% 20%; /* Dark brown background */
+    --foreground: 36 100% 98%; /* Light cream text */
+
+    --muted: 28 20% 15%; /* Darker grey-brown for muted in dark mode */
+    --muted-foreground: 30 20% 60%; /* Light grey foreground */
+
+    --popover: 22 16% 20%; /* Dark brown popover background */
+    --popover-foreground: 36 100% 98%; /* Light cream text */
+
+    --card: 22 16% 20%; /* Dark brown cards */
+    --card-foreground: 36 100% 98%; /* Light cream text */
+
+    --border: 28 20% 15%; /* Darker grey-brown border */
+    --input: 28 20% 15%; /* Same for inputs */
+
+    --primary: 30 40% 22%; /* Coffee brown for primary background */
+    --primary-foreground: 36 100% 98%; /* Light cream text */
+
+    --secondary: 28 20% 15%; /* Darker secondary background */
+    --secondary-foreground: 36 100% 98%; /* Light cream text */
+
+    --accent: 36 40% 40%; /* Darker caramel accent */
+    --accent-foreground: 36 100% 98%; /* Light text on accents */
+
+    --destructive: 0 62.8% 30.6%; /* Darker red for destructive */
+    --destructive-foreground: 36 100% 98%; /* Light text */
+
+    --ring: 28 40% 80%; /* Softer ring for focus states in dark mode */
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -95,4 +95,33 @@
   background-color: var(--secondary);
   color: var(--secondary-foreground);
   padding: 1rem;
+}
+
+.header {
+  padding-left: 1rem; /* Apply consistent padding to the header */
+  padding-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title {
+  color: #724629; /* Darker shade of brown for readability */
+  font-size: 2em;
+  font-weight: 600;
+  margin: 0; /* Ensure no extra margin is added */
+}
+
+.profile-select {
+  background-color: #f9e3cf; /* Softer cream color for the select dropdown */
+  color: #50311c; /* Dark brown for the text */
+  border: 1px solid #ddbe9c; /* Subtle caramel border to match the theme */
+  padding: 0.5rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+.profile-select option {
+  background-color: #F2E3C6; /* Lighter cream for dropdown options */
+  color: #50311c; /* Dark text for readability */
 }
