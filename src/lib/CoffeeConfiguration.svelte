@@ -69,7 +69,7 @@
     function toggleFavorite() {
         const currentBrew = { title, roast, strength, size };
         const userFavorite = getFavoriteBrew(userId);
-
+        console.log("hello")
         // Toggle logic
         if (userFavorite && userFavorite.title === title && userFavorite.roast === roast && userFavorite.strength === strength && userFavorite.size === size) {
             // Current brew is already favored; unfavorite it
@@ -77,12 +77,18 @@
             favoriteBrew.set(null);
             updateUserFavoriteBrew(userId, null);
         } else {
+            if (userFavorite) {
+                const confirmation = confirm("Favoriting this brew will replace your current favorite. Do you want to proceed?");
+                if (!confirmation) return; // If the user cancels, don't proceed
+            }
+
             // Current brew is not favored; favorite it
             isFavorited = true;
             favoriteBrew.set(currentBrew);
             updateUserFavoriteBrew(userId, currentBrew);
         }
     }
+
 
     function updateFavoritedState() {
         const userFavorite = getFavoriteBrew(userId);
